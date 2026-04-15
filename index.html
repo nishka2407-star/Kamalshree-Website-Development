@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kamal Shree – Royal Ethnic Wear</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#b8935a;
+  --gold-light:#d4aa76;
+  --navy:#0d1b2a;
+  --navy-mid:#1a2e45;
+  --cream:#faf6f0;
+  --cream-dark:#f0e9de;
+  --text:#1a1208;
+  --text-muted:#6b5f52;
+  --white:#ffffff;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text);overflow-x:hidden}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--cream)}
+::-webkit-scrollbar-thumb{background:var(--gold);border-radius:3px}
+
+/* NAVBAR */
+nav{position:fixed;top:0;left:0;width:100%;z-index:1000;transition:all .4s ease;padding:1.2rem 5%}
+nav.scrolled{background:rgba(13,27,42,.96);backdrop-filter:blur(20px);padding:.8rem 5%;box-shadow:0 2px 40px rgba(0,0,0,.3)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:600;color:var(--white);letter-spacing:.08em;text-decoration:none}
+.nav-logo span{color:var(--gold)}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{color:rgba(255,255,255,.85);text-decoration:none;font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;transition:.3s;font-weight:400}
+.nav-links a:hover{color:var(--gold)}
+.nav-cta{background:var(--gold);color:var(--navy);padding:.55rem 1.4rem;border-radius:0;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;font-weight:500;transition:.3s}
+.nav-cta:hover{background:var(--gold-light)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px}
+.hamburger span{display:block;width:24px;height:1.5px;background:var(--white);transition:.3s}
+.mobile-menu{display:none;position:fixed;top:0;left:0;width:100%;height:100vh;background:var(--navy);z-index:999;flex-direction:column;align-items:center;justify-content:center;gap:2rem}
+.mobile-menu.open{display:flex}
+.mobile-menu a{color:var(--white);text-decoration:none;font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;transition:.3s}
+.mobile-menu a:hover{color:var(--gold)}
+.mobile-close{position:absolute;top:1.5rem;right:5%;font-size:2rem;color:var(--white);cursor:pointer;background:none;border:none}
+
+/* HERO / BANNER SLIDER */
+.hero{position:relative;height:100vh;min-height:600px;overflow:hidden}
+.slide{position:absolute;inset:0;opacity:0;transition:opacity 1.2s ease}
+.slide.active{opacity:1}
+.slide-bg{width:100%;height:100%;background-size:cover;background-position:center top;filter:brightness(.45)}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(13,27,42,.7) 0%,rgba(184,147,90,.15) 100%)}
+.hero-content{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem}
+.hero-eyebrow{font-size:.75rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;opacity:0;animation:fadeUp .8s .4s forwards}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(3rem,8vw,7rem);font-weight:300;color:var(--white);line-height:1.05;margin-bottom:1.5rem;opacity:0;animation:fadeUp .8s .6s forwards}
+.hero-title em{font-style:italic;color:var(--gold)}
+.hero-sub{font-size:.9rem;color:rgba(255,255,255,.75);letter-spacing:.06em;max-width:460px;line-height:1.8;margin-bottom:2.5rem;opacity:0;animation:fadeUp .8s .8s forwards}
+.hero-btns{display:flex;gap:1.2rem;flex-wrap:wrap;justify-content:center;opacity:0;animation:fadeUp .8s 1s forwards}
+.btn-primary{background:var(--gold);color:var(--navy);padding:.8rem 2.2rem;font-size:.82rem;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;font-weight:500;transition:.3s;border:none;cursor:pointer}
+.btn-primary:hover{background:var(--gold-light);transform:translateY(-2px)}
+.btn-secondary{background:transparent;color:var(--white);border:1px solid rgba(255,255,255,.5);padding:.8rem 2.2rem;font-size:.82rem;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;font-weight:400;transition:.3s}
+.btn-secondary:hover{border-color:var(--gold);color:var(--gold)}
+.slide-dots{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;gap:.6rem;z-index:10}
+.dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.4);cursor:pointer;transition:.3s;border:none}
+.dot.active{background:var(--gold);width:24px;border-radius:4px}
+.hero-scroll{position:absolute;bottom:2rem;right:5%;display:flex;align-items:center;gap:.6rem;color:rgba(255,255,255,.5);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;writing-mode:vertical-rl}
+.hero-scroll::after{content:'';display:block;width:1px;height:40px;background:rgba(255,255,255,.3);margin-top:.4rem}
+
+/* OFFER BANNER */
+.offer-banner{background:var(--navy);color:var(--white);text-align:center;padding:.7rem 1rem;font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;overflow:hidden}
+.offer-ticker{display:inline-flex;gap:4rem;animation:ticker 18s linear infinite;white-space:nowrap}
+.offer-ticker span{color:var(--gold)}
+
+/* SECTION COMMONS */
+section{padding:6rem 5%}
+.section-header{text-align:center;margin-bottom:4rem}
+.section-eyebrow{font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:.8rem;display:block}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2.2rem,4vw,3.4rem);font-weight:300;line-height:1.2;color:var(--navy)}
+.section-title em{font-style:italic;color:var(--gold)}
+.divider{width:60px;height:1px;background:var(--gold);margin:1.2rem auto 0}
+
+/* ABOUT */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}
+.about-img-stack{position:relative;height:560px}
+.about-img-main{position:absolute;left:0;top:0;width:75%;height:85%;object-fit:cover;object-position:top}
+.about-img-accent{position:absolute;right:0;bottom:0;width:55%;height:55%;object-fit:cover;object-position:top;border:6px solid var(--cream)}
+.about-tag{position:absolute;left:50%;bottom:12%;transform:translateX(-50%);background:var(--navy);color:var(--white);padding:.8rem 1.5rem;font-family:'Cormorant Garamond',serif;font-size:1rem;white-space:nowrap;letter-spacing:.06em}
+.about-tag span{color:var(--gold)}
+.about-text h2{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,3.5vw,3rem);font-weight:300;line-height:1.25;color:var(--navy);margin-bottom:1.5rem}
+.about-text p{color:var(--text-muted);line-height:1.9;margin-bottom:1.2rem;font-size:.95rem}
+.about-stats{display:flex;gap:2.5rem;margin:2rem 0}
+.stat-num{font-family:'Cormorant Garamond',serif;font-size:2.4rem;font-weight:300;color:var(--gold);display:block}
+.stat-label{font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)}
+.mission-vision{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:2rem}
+.mv-card{padding:1.5rem;border:1px solid var(--cream-dark);background:var(--cream)}
+.mv-card h4{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--navy);margin-bottom:.6rem;letter-spacing:.04em}
+.mv-card p{font-size:.85rem;color:var(--text-muted);line-height:1.8}
+
+/* PRODUCTS */
+.products{background:var(--navy)}
+.products .section-title{color:var(--white)}
+.products .section-eyebrow{color:var(--gold-light)}
+.product-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.product-card{position:relative;overflow:hidden;cursor:pointer;group:true}
+.product-card img{width:100%;height:420px;object-fit:cover;object-position:top;display:block;transition:transform .6s ease}
+.product-card:hover img{transform:scale(1.06)}
+.product-info{position:absolute;bottom:0;left:0;right:0;padding:1.8rem 1.5rem;background:linear-gradient(0deg,rgba(13,27,42,.9) 0%,transparent 100%);transform:translateY(30px);transition:.4s}
+.product-card:hover .product-info{transform:translateY(0)}
+.product-name{font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--white);font-weight:400;margin-bottom:.3rem}
+.product-type{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+.product-tag-new{position:absolute;top:1rem;right:1rem;background:var(--gold);color:var(--navy);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;padding:.3rem .7rem;font-weight:500}
+.view-all{text-align:center;margin-top:3rem}
+
+/* GALLERY */
+.gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(2,220px);gap:8px}
+.gallery-item{overflow:hidden;position:relative}
+.gallery-item:nth-child(1){grid-column:span 2;grid-row:span 2}
+.gallery-item:nth-child(4){grid-column:span 2}
+.gallery-item img{width:100%;height:100%;object-fit:cover;object-position:top;transition:transform .5s ease}
+.gallery-item:hover img{transform:scale(1.08)}
+.gallery-item-overlay{position:absolute;inset:0;background:rgba(184,147,90,0);transition:.4s;display:flex;align-items:center;justify-content:center}
+.gallery-item:hover .gallery-item-overlay{background:rgba(184,147,90,.2)}
+.ig-icon{opacity:0;transition:.3s;color:white;font-size:1.5rem}
+.gallery-item:hover .ig-icon{opacity:1}
+
+/* TESTIMONIALS */
+.testimonials{background:var(--navy-mid)}
+.testimonials .section-title{color:var(--white)}
+.testimonials .divider{background:var(--gold)}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.testi-card{background:rgba(255,255,255,.05);border:1px solid rgba(184,147,90,.2);padding:2rem;position:relative}
+.testi-card::before{content:'\201C';font-family:'Cormorant Garamond',serif;font-size:5rem;color:var(--gold);opacity:.3;position:absolute;top:.5rem;left:1rem;line-height:1}
+.testi-stars{color:var(--gold);font-size:.85rem;margin-bottom:1rem;letter-spacing:.08em}
+.testi-text{color:rgba(255,255,255,.75);font-size:.9rem;line-height:1.85;margin-bottom:1.5rem;font-style:italic}
+.testi-author{font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--gold);letter-spacing:.05em}
+.testi-location{font-size:.75rem;color:rgba(255,255,255,.4);letter-spacing:.08em;margin-top:.2rem}
+
+/* WHY US */
+.why-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2rem}
+.why-card{text-align:center;padding:2.5rem 1.5rem}
+.why-icon{width:60px;height:60px;border:1px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;font-size:1.4rem}
+.why-title{font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--navy);margin-bottom:.8rem}
+.why-text{font-size:.85rem;color:var(--text-muted);line-height:1.8}
+
+/* FAQ */
+.faq-list{max-width:750px;margin:0 auto}
+.faq-item{border-bottom:1px solid var(--cream-dark);overflow:hidden}
+.faq-q{width:100%;text-align:left;background:none;border:none;padding:1.4rem 0;display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--navy);font-weight:400;transition:.3s}
+.faq-q:hover{color:var(--gold)}
+.faq-icon{font-size:1.2rem;color:var(--gold);transition:.3s;flex-shrink:0;margin-left:1rem}
+.faq-a{max-height:0;overflow:hidden;transition:.4s ease}
+.faq-a.open{max-height:200px}
+.faq-a p{padding:0 0 1.2rem;color:var(--text-muted);font-size:.9rem;line-height:1.85}
+
+/* CONTACT */
+.contact{background:var(--navy)}
+.contact .section-title{color:var(--white)}
+.contact-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:4rem;align-items:start}
+.contact-info{color:rgba(255,255,255,.75)}
+.contact-item{display:flex;gap:1rem;margin-bottom:2rem;align-items:flex-start}
+.contact-icon{width:42px;height:42px;border:1px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.9rem;color:var(--gold)}
+.contact-detail h4{font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--white);margin-bottom:.3rem;font-weight:400}
+.contact-detail p,.contact-detail a{font-size:.88rem;color:rgba(255,255,255,.6);text-decoration:none;line-height:1.7}
+.contact-detail a:hover{color:var(--gold)}
+.action-btns{display:flex;gap:1rem;margin-top:2rem;flex-wrap:wrap}
+.btn-whatsapp{background:#25D366;color:#fff;padding:.75rem 1.5rem;text-decoration:none;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;font-weight:500;display:flex;align-items:center;gap:.5rem;transition:.3s}
+.btn-whatsapp:hover{background:#1eb956}
+.btn-call{background:transparent;border:1px solid var(--gold);color:var(--gold);padding:.75rem 1.5rem;text-decoration:none;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;font-weight:500;display:flex;align-items:center;gap:.5rem;transition:.3s}
+.btn-call:hover{background:var(--gold);color:var(--navy)}
+.contact-form{background:rgba(255,255,255,.04);border:1px solid rgba(184,147,90,.2);padding:2.5rem}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+.form-group{margin-bottom:1rem}
+.form-group label{display:block;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:.5rem}
+.form-group input,.form-group select,.form-group textarea{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:var(--white);padding:.8rem 1rem;font-family:'Jost',sans-serif;font-size:.9rem;outline:none;transition:.3s}
+.form-group input:focus,.form-group select,.form-group textarea:focus{border-color:var(--gold)}
+.form-group select{cursor:pointer}
+.form-group select option{background:var(--navy);color:var(--white)}
+.form-group textarea{resize:vertical;min-height:110px}
+.map-embed{margin-top:2rem;border:1px solid rgba(184,147,90,.2);overflow:hidden}
+.map-embed iframe{width:100%;height:220px;border:none;filter:grayscale(40%) contrast(1.1)}
+
+/* FOOTER */
+footer{background:#070f18;padding:4rem 5% 2rem}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3rem}
+.footer-brand .nav-logo{display:inline-block;margin-bottom:1rem}
+.footer-brand p{font-size:.85rem;color:rgba(255,255,255,.4);line-height:1.85;max-width:280px}
+.footer-col h4{font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--gold);letter-spacing:.08em;margin-bottom:1.2rem}
+.footer-col ul{list-style:none}
+.footer-col ul li{margin-bottom:.6rem}
+.footer-col ul li a{color:rgba(255,255,255,.4);text-decoration:none;font-size:.84rem;transition:.3s}
+.footer-col ul li a:hover{color:var(--gold)}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.07);padding-top:2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:gap}
+.footer-bottom p{font-size:.78rem;color:rgba(255,255,255,.25);letter-spacing:.06em}
+.social-links{display:flex;gap:1rem}
+.social-links a{width:36px;height:36px;border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.4);text-decoration:none;font-size:.85rem;transition:.3s}
+.social-links a:hover{border-color:var(--gold);color:var(--gold)}
+
+/* BACK TO TOP */
+#btt{position:fixed;bottom:2rem;right:2rem;width:44px;height:44px;background:var(--gold);color:var(--navy);border:none;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;opacity:0;transform:translateY(10px);transition:.3s;z-index:900}
+#btt.show{opacity:1;transform:translateY(0)}
+#btt:hover{background:var(--gold-light)}
+
+/* FLOATING BUTTONS */
+.float-btns{position:fixed;left:1.5rem;bottom:2rem;display:flex;flex-direction:column;gap:.6rem;z-index:900}
+.float-btn{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:1.1rem;transition:.3s;box-shadow:0 4px 15px rgba(0,0,0,.3)}
+.float-wa{background:#25D366;color:#fff}
+.float-wa:hover{background:#1eb956;transform:scale(1.1)}
+.float-call{background:var(--gold);color:var(--navy)}
+.float-call:hover{background:var(--gold-light);transform:scale(1.1)}
+
+/* FORM SUCCESS */
+.form-success{display:none;text-align:center;padding:2rem;color:var(--gold);font-family:'Cormorant Garamond',serif;font-size:1.2rem}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* RESPONSIVE */
+@media(max-width:1024px){
+  .product-grid{grid-template-columns:repeat(2,1fr)}
+  .why-grid{grid-template-columns:repeat(2,1fr)}
+  .footer-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:768px){
+  .nav-links,.nav-cta{display:none}
+  .hamburger{display:flex}
+  .about-grid{grid-template-columns:1fr}
+  .about-img-stack{height:360px}
+  .testi-grid{grid-template-columns:1fr}
+  .contact-grid{grid-template-columns:1fr}
+  .gallery-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto}
+  .gallery-item:nth-child(1){grid-column:span 2;grid-row:span 1}
+  .gallery-item:nth-child(4){grid-column:span 2}
+  .form-row{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr}
+  .mission-vision{grid-template-columns:1fr}
+  .footer-bottom{flex-direction:column;gap:1rem;text-align:center}
+}
+@media(max-width:480px){
+  section{padding:4rem 5%}
+  .why-grid{grid-template-columns:1fr}
+  .gallery-grid{grid-template-columns:1fr}
+  .gallery-item:nth-child(1){grid-column:span 1}
+  .gallery-item:nth-child(4){grid-column:span 1}
+  .about-stats{flex-wrap:wrap;gap:1.5rem}
+}
+</style>
+</head>
+<body>
+
+<!-- FLOATING BUTTONS -->
+<div class="float-btns">
+  <a href="https://wa.me/919999999999?text=Hello%20Kamal%20Shree%2C%20I%20am%20interested%20in%20your%20collection!" class="float-btn float-wa" target="_blank" title="WhatsApp">&#128172;</a>
+  <a href="tel:+919999999999" class="float-btn float-call" title="Call Us">&#128222;</a>
+</div>
+
+<!-- BACK TO TOP -->
+<button id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">&#8679;</button>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" onclick="closeMobile()">&#10005;</button>
+  <a href="#home" onclick="closeMobile()">Home</a>
+  <a href="#about" onclick="closeMobile()">About</a>
+  <a href="#collections" onclick="closeMobile()">Collections</a>
+  <a href="#gallery" onclick="closeMobile()">Gallery</a>
+  <a href="#testimonials" onclick="closeMobile()">Testimonials</a>
+  <a href="#faq" onclick="closeMobile()">FAQ</a>
+  <a href="#contact" onclick="closeMobile()">Contact</a>
+</div>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#home" class="nav-logo">Kamal<span>Shree</span></a>
+    <ul class="nav-links">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#collections">Collections</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#testimonials">Testimonials</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="#contact" class="nav-cta">Enquire Now</a>
+    <div class="hamburger" onclick="openMobile()"><span></span><span></span><span></span></div>
+  </div>
+</nav>
+
+<!-- OFFER TICKER -->
+<div class="offer-banner" style="margin-top:0;position:relative;z-index:5">
+  <div class="offer-ticker">
+    <span>&#10022; New Collection Arrived</span> &nbsp;&nbsp;·&nbsp;&nbsp; Exclusive Bridal Lehengas Available &nbsp;&nbsp;·&nbsp;&nbsp; <span>&#10022; Visit Us at BBC Market, Panchkuva, Ahmedabad</span> &nbsp;&nbsp;·&nbsp;&nbsp; Custom Stitching Available &nbsp;&nbsp;·&nbsp;&nbsp; <span>&#10022; New Collection Arrived</span> &nbsp;&nbsp;·&nbsp;&nbsp; Exclusive Bridal Lehengas Available &nbsp;&nbsp;·&nbsp;&nbsp; <span>&#10022; Visit Us at BBC Market, Panchkuva, Ahmedabad</span> &nbsp;&nbsp;·&nbsp;&nbsp; Custom Stitching Available
+  </div>
+</div>
+
+<!-- HERO SLIDER -->
+<section class="hero" id="home">
+  <div class="slide active" id="s1">
+    <div class="slide-bg" style="background-image:url('https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=1600&q=80')"></div>
+  </div>
+  <div class="slide" id="s2">
+    <div class="slide-bg" style="background-image:url('https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=1600&q=80')"></div>
+  </div>
+  <div class="slide" id="s3">
+    <div class="slide-bg" style="background-image:url('https://images.unsplash.com/photo-1617195737496-bc30194e3a19?w=1600&q=80')"></div>
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">&#9670; Royal Ethnic Wear Since 2010 &#9670;</p>
+    <h1 class="hero-title">Wear the Art<br>of <em>Tradition</em></h1>
+    <p class="hero-sub">Premium ethnic wear crafted with love — lehengas, sharara sets, gowns, and couture pieces for every celebration.</p>
+    <div class="hero-btns">
+      <a href="#collections" class="btn-primary">Explore Collection</a>
+      <a href="#contact" class="btn-secondary">Book Appointment</a>
+    </div>
+  </div>
+  <div class="slide-dots">
+    <button class="dot active" onclick="goSlide(0)"></button>
+    <button class="dot" onclick="goSlide(1)"></button>
+    <button class="dot" onclick="goSlide(2)"></button>
+  </div>
+  <div class="hero-scroll">Scroll</div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-img-stack reveal">
+      <img class="about-img-main" src="https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800&q=80" alt="Kamal Shree store interior">
+      <img class="about-img-accent" src="https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600&q=80" alt="Ethnic wear detail">
+      <div class="about-tag">Est. <span>2010</span> · Ahmedabad</div>
+    </div>
+    <div class="about-text reveal">
+      <span class="section-eyebrow">Our Story</span>
+      <h2>Where Heritage Meets<br>Modern Elegance</h2>
+      <p>Kamal Shree was born from a passion for preserving the grandeur of Indian craftsmanship. Founded in the heart of Ahmedabad's textile district, we have spent over a decade curating and crafting ethnic wear that speaks to the soul of every celebration — from intimate mehendis to grand weddings.</p>
+      <p>Our collections blend time-honoured embroidery techniques — zardozi, resham, gota patti, and mirror work — with contemporary silhouettes that flatter the modern woman. Every piece in our store is selected with care, ensuring that when you wear Kamal Shree, you wear art.</p>
+      <div class="about-stats">
+        <div><span class="stat-num">14+</span><span class="stat-label">Years of Excellence</span></div>
+        <div><span class="stat-num">2000+</span><span class="stat-label">Happy Brides</span></div>
+        <div><span class="stat-num">500+</span><span class="stat-label">Designs in Store</span></div>
+      </div>
+      <div class="mission-vision">
+        <div class="mv-card">
+          <h4>&#9670; Our Mission</h4>
+          <p>To make every woman feel like royalty by offering exquisite ethnic wear that is accessible, authentic, and artfully crafted.</p>
+        </div>
+        <div class="mv-card">
+          <h4>&#9670; Our Vision</h4>
+          <p>To be Ahmedabad's most trusted destination for bridal and festive ethnic wear, celebrating India's rich textile heritage.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COLLECTIONS -->
+<section id="collections" class="products">
+  <div class="section-header">
+    <span class="section-eyebrow">Our Collections</span>
+    <h2 class="section-title">Curated for <em>Every Occasion</em></h2>
+    <div class="divider"></div>
+  </div>
+  <div class="product-grid">
+    <div class="product-card reveal">
+      <span class="product-tag-new">New</span>
+      <img src="https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=700&q=80" alt="Bridal Lehenga">
+      <div class="product-info">
+        <p class="product-type">Bridal Collection</p>
+        <h3 class="product-name">Bridal Lehengas</h3>
+      </div>
+    </div>
+    <div class="product-card reveal">
+      <img src="https://images.unsplash.com/photo-1617195737496-bc30194e3a19?w=700&q=80" alt="Sharara Set">
+      <div class="product-info">
+        <p class="product-type">Festive Wear</p>
+        <h3 class="product-name">Sharara Sets</h3>
+      </div>
+    </div>
+    <div class="product-card reveal">
+      <span class="product-tag-new">Trending</span>
+      <img src="https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=700&q=80" alt="Indo-Western Gowns">
+      <div class="product-info">
+        <p class="product-type">Contemporary</p>
+        <h3 class="product-name">Indo-Western Gowns</h3>
+      </div>
+    </div>
+    <div class="product-card reveal">
+      <img src="https://images.unsplash.com/photo-1519334197-21c0a35dc48d?w=700&q=80" alt="Ready to Wear">
+      <div class="product-info">
+        <p class="product-type">Ready to Wear</p>
+        <h3 class="product-name">Salwar Kameez</h3>
+      </div>
+    </div>
+    <div class="product-card reveal">
+      <img src="https://images.unsplash.com/photo-1585842378054-ee2e52f94ba2?w=700&q=80" alt="Anarkali">
+      <div class="product-info">
+        <p class="product-type">Classic Collection</p>
+        <h3 class="product-name">Anarkali Suits</h3>
+      </div>
+    </div>
+    <div class="product-card reveal">
+      <span class="product-tag-new">New</span>
+      <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=700&q=80" alt="Co-ord Sets">
+      <div class="product-info">
+        <p class="product-type">Modern Collection</p>
+        <h3 class="product-name">Co-ord Sets</h3>
+      </div>
+    </div>
+  </div>
+  <div class="view-all">
+    <a href="#contact" class="btn-primary">Book a Visit to View Full Collection</a>
+  </div>
+</section>
+
+<!-- WHY CHOOSE US -->
+<section id="why">
+  <div class="section-header reveal">
+    <span class="section-eyebrow">Why Kamal Shree</span>
+    <h2 class="section-title">Crafted with <em>Purpose</em></h2>
+    <div class="divider"></div>
+  </div>
+  <div class="why-grid">
+    <div class="why-card reveal">
+      <div class="why-icon">&#9670;</div>
+      <h3 class="why-title">Authentic Craftsmanship</h3>
+      <p class="why-text">Every piece features handcrafted embroidery by skilled artisans preserving centuries-old textile traditions of India.</p>
+    </div>
+    <div class="why-card reveal">
+      <div class="why-icon">&#9825;</div>
+      <h3 class="why-title">Bridal Expertise</h3>
+      <p class="why-text">Over 2000 brides have trusted us to make their special day unforgettable with our exclusive bridal collections.</p>
+    </div>
+    <div class="why-card reveal">
+      <div class="why-icon">&#10022;</div>
+      <h3 class="why-title">Custom Stitching</h3>
+      <p class="why-text">We offer personalized tailoring and customisation services to ensure a perfect fit for every body type and preference.</p>
+    </div>
+    <div class="why-card reveal">
+      <div class="why-icon">&#9737;</div>
+      <h3 class="why-title">Premium Fabrics</h3>
+      <p class="why-text">From pure silk to georgette and organza, we source only the finest fabrics from across India's textile hubs.</p>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery" style="padding-top:0;padding-bottom:6rem">
+  <div class="section-header reveal">
+    <span class="section-eyebrow">Our Gallery</span>
+    <h2 class="section-title">A Glimpse of <em>Kamal Shree</em></h2>
+    <div class="divider"></div>
+  </div>
+  <div class="gallery-grid reveal">
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=800&q=80" alt="Gallery 1">
+      <div class="gallery-item-overlay"><span class="ig-icon">&#128248;</span></div>
+    </div>
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=500&q=80" alt="Gallery 2">
+      <div class="gallery-item-overlay"></div>
+    </div>
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1617195737496-bc30194e3a19?w=500&q=80" alt="Gallery 3">
+      <div class="gallery-item-overlay"></div>
+    </div>
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1585842378054-ee2e52f94ba2?w=800&q=80" alt="Gallery 4">
+      <div class="gallery-item-overlay"></div>
+    </div>
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1519334197-21c0a35dc48d?w=500&q=80" alt="Gallery 5">
+      <div class="gallery-item-overlay"></div>
+    </div>
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=500&q=80" alt="Gallery 6">
+      <div class="gallery-item-overlay"></div>
+    </div>
+  </div>
+  <div style="text-align:center;margin-top:2.5rem">
+    <a href="https://www.instagram.com/yuvrani_rooprani" target="_blank" class="btn-primary">Follow Us on Instagram &#8599;</a>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials" class="testimonials">
+  <div class="section-header">
+    <span class="section-eyebrow">What Brides Say</span>
+    <h2 class="section-title" style="color:var(--white)">Loved by <em>Thousands</em></h2>
+    <div class="divider"></div>
+  </div>
+  <div class="testi-grid">
+    <div class="testi-card reveal">
+      <div class="testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <p class="testi-text">I got my bridal lehenga from Kamal Shree and I was absolutely in awe. The craftsmanship was beyond my expectations. Every guest at my wedding complimented my outfit. Truly a magical experience!</p>
+      <p class="testi-author">Priya Sharma</p>
+      <p class="testi-location">Bride · Ahmedabad</p>
+    </div>
+    <div class="testi-card reveal">
+      <div class="testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <p class="testi-text">The sharara set I purchased for my sister's reception was so beautiful. The fabric quality, the embroidery — everything was first class. Kamal Shree is my go-to store for every function now!</p>
+      <p class="testi-author">Ananya Patel</p>
+      <p class="testi-location">Regular Customer · Surat</p>
+    </div>
+    <div class="testi-card reveal">
+      <div class="testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <p class="testi-text">Wonderful collection and even better service. The staff helped me find the perfect outfit for my daughter's wedding. The custom fitting made such a difference. Highly recommend Kamal Shree!</p>
+      <p class="testi-author">Meena Desai</p>
+      <p class="testi-location">Customer · Vadodara</p>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="section-header reveal">
+    <span class="section-eyebrow">FAQ</span>
+    <h2 class="section-title">Frequently Asked <em>Questions</em></h2>
+    <div class="divider"></div>
+  </div>
+  <div class="faq-list">
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Do you offer custom stitching and tailoring? <span class="faq-icon">+</span></button>
+      <div class="faq-a"><p>Yes! We offer complete custom stitching and alteration services. Visit our store at BBC Market, Panchkuva, Ahmedabad and our team will take your measurements and create a perfectly fitted outfit.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">How long does a custom order take? <span class="faq-icon">+</span></button>
+      <div class="faq-a"><p>Custom bridal orders typically take 3–6 weeks depending on the complexity of embroidery. Simpler alterations can be done in 3–7 days. We recommend booking well in advance for bridal orders.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Do you have ready-to-wear options available? <span class="faq-icon">+</span></button>
+      <div class="faq-a"><p>Absolutely! We have a large collection of ready-to-wear ethnic wear including sharara sets, lehengas, anarkali suits, and more. Visit our store to explore over 500 designs.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">What is your price range? <span class="faq-icon">+</span></button>
+      <div class="faq-a"><p>Our collection ranges from affordable everyday wear starting at ₹2,500 to exclusive bridal lehengas. We cater to every budget without compromising on quality. Visit us to find your perfect outfit.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">What are your store timings? <span class="faq-icon">+</span></button>
+      <div class="faq-a"><p>We are open Monday to Saturday from 10:00 AM to 8:00 PM, and Sunday from 11:00 AM to 6:00 PM. You can also book a private appointment for a more personalised shopping experience.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Do you ship outside Ahmedabad? <span class="faq-icon">+</span></button>
+      <div class="faq-a"><p>Yes, we ship across India. For shipping enquiries and custom orders, please contact us via WhatsApp or call us directly and our team will assist you.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="contact">
+  <div class="section-header">
+    <span class="section-eyebrow">Get in Touch</span>
+    <h2 class="section-title">Visit Us or <em>Enquire Now</em></h2>
+    <div class="divider"></div>
+  </div>
+  <div class="contact-grid">
+    <div class="contact-info reveal">
+      <div class="contact-item">
+        <div class="contact-icon">&#9675;</div>
+        <div class="contact-detail">
+          <h4>Our Store</h4>
+          <p>42, Ground Floor, BBC Market,<br>Opposite Fire Station, Panchkuva,<br>Ahmedabad, Gujarat – 380001</p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">&#9742;</div>
+        <div class="contact-detail">
+          <h4>Phone</h4>
+          <a href="tel:+919999999999">+91 99999 99999</a>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">&#9993;</div>
+        <div class="contact-detail">
+          <h4>Email</h4>
+          <a href="mailto:kamalshree@email.com">kamalshree@email.com</a>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">&#9679;</div>
+        <div class="contact-detail">
+          <h4>Store Hours</h4>
+          <p>Mon – Sat: 10:00 AM – 8:00 PM<br>Sunday: 11:00 AM – 6:00 PM</p>
+        </div>
+      </div>
+      <div class="action-btns">
+        <a href="https://wa.me/919999999999?text=Hello%20Kamal%20Shree%2C%20I%20would%20like%20to%20enquire%20about%20your%20collection." class="btn-whatsapp" target="_blank">&#128172; WhatsApp Us</a>
+        <a href="tel:+919999999999" class="btn-call">&#128222; Call Now</a>
+      </div>
+      <div class="map-embed">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3671.609484756792!2d72.5842!3d23.0262!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e849b1a41ccc7%3A0x5a3b47a13ea2acfd!2sPanchkuva%2C%20Ahmedabad%2C%20Gujarat!5e0!3m2!1sen!2sin!4v1680000000000" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Kamal Shree Store Location"></iframe>
+      </div>
+    </div>
+    <div class="contact-form reveal">
+      <div id="formContainer">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Your Name</label>
+            <input type="text" id="fname" placeholder="Priya Sharma">
+          </div>
+          <div class="form-group">
+            <label>Phone Number</label>
+            <input type="tel" id="fphone" placeholder="+91 98765 43210">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="femail" placeholder="priya@example.com">
+        </div>
+        <div class="form-group">
+          <label>I Am Looking For</label>
+          <select id="ftype">
+            <option value="">Select an option</option>
+            <option>Bridal Lehenga</option>
+            <option>Sharara Set</option>
+            <option>Anarkali / Salwar Suit</option>
+            <option>Indo-Western Gown</option>
+            <option>Custom Stitching</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Message</label>
+          <textarea id="fmsg" placeholder="Tell us about your occasion, preferred colors, or any specific requirements..."></textarea>
+        </div>
+        <p id="ferror" style="color:#e24b4a;font-size:.82rem;margin-bottom:.8rem;display:none">Please fill in all required fields.</p>
+        <button class="btn-primary" onclick="submitForm()" style="width:100%;padding:1rem;font-size:.85rem;letter-spacing:.16em">Send Enquiry &rarr;</button>
+      </div>
+      <div class="form-success" id="formSuccess">
+        <p style="font-size:2rem;margin-bottom:.5rem">&#10022;</p>
+        <p>Thank you for reaching out!</p>
+        <p style="font-size:.85rem;color:rgba(255,255,255,.6);margin-top:.5rem;font-family:'Jost',sans-serif">We'll contact you within 24 hours. Meanwhile, feel free to WhatsApp us for a quicker response.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="#home" class="nav-logo">Kamal<span style="color:var(--gold)">Shree</span></a>
+      <p>A royal destination for ethnic wear in Ahmedabad. Curating and crafting India's most beautiful traditional outfits since 2010.</p>
+      <div class="social-links" style="margin-top:1.2rem">
+        <a href="https://www.instagram.com/yuvrani_rooprani" target="_blank" title="Instagram">&#9824;</a>
+        <a href="https://wa.me/919999999999" target="_blank" title="WhatsApp">&#9829;</a>
+        <a href="tel:+919999999999" title="Call">&#9742;</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#collections">Collections</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#testimonials">Testimonials</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Collections</h4>
+      <ul>
+        <li><a href="#collections">Bridal Lehengas</a></li>
+        <li><a href="#collections">Sharara Sets</a></li>
+        <li><a href="#collections">Anarkali Suits</a></li>
+        <li><a href="#collections">Indo-Western Gowns</a></li>
+        <li><a href="#collections">Salwar Kameez</a></li>
+        <li><a href="#collections">Co-ord Sets</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Visit Us</h4>
+      <ul>
+        <li><a href="#">42, BBC Market, Panchkuva</a></li>
+        <li><a href="#">Opp. Fire Station, Ahmedabad</a></li>
+        <li><a href="tel:+919999999999">+91 99999 99999</a></li>
+        <li><a href="mailto:kamalshree@email.com">kamalshree@email.com</a></li>
+        <li><a href="#">Mon–Sat: 10AM – 8PM</a></li>
+        <li><a href="#">Sunday: 11AM – 6PM</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2025 Kamal Shree. All rights reserved. &nbsp;·&nbsp; Designed with &#9829; in Ahmedabad</p>
+    <div class="social-links">
+      <a href="https://www.instagram.com/yuvrani_rooprani" target="_blank">Insta</a>
+      <a href="https://wa.me/919999999999" target="_blank">WA</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// NAVBAR SCROLL
+window.addEventListener('scroll',()=>{
+  document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>60);
+  document.getElementById('btt').classList.toggle('show',window.scrollY>400);
+});
+
+// MOBILE MENU
+function openMobile(){document.getElementById('mobileMenu').classList.add('open');document.body.style.overflow='hidden'}
+function closeMobile(){document.getElementById('mobileMenu').classList.remove('open');document.body.style.overflow=''}
+
+// HERO SLIDER
+let cur=0;
+const slides=document.querySelectorAll('.slide');
+const dots=document.querySelectorAll('.dot');
+function goSlide(n){
+  slides[cur].classList.remove('active');dots[cur].classList.remove('active');
+  cur=n;slides[cur].classList.add('active');dots[cur].classList.add('active');
+}
+setInterval(()=>goSlide((cur+1)%slides.length),5000);
+
+// FAQ
+function toggleFaq(btn){
+  const ans=btn.nextElementSibling;
+  const icon=btn.querySelector('.faq-icon');
+  const isOpen=ans.classList.contains('open');
+  document.querySelectorAll('.faq-a').forEach(a=>a.classList.remove('open'));
+  document.querySelectorAll('.faq-icon').forEach(i=>i.textContent='+');
+  if(!isOpen){ans.classList.add('open');icon.textContent='−';}
+}
+
+// SCROLL REVEAL
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')});
+},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+// FORM SUBMIT
+function submitForm(){
+  const name=document.getElementById('fname').value.trim();
+  const phone=document.getElementById('fphone').value.trim();
+  const email=document.getElementById('femail').value.trim();
+  const err=document.getElementById('ferror');
+  if(!name||!phone||!email){err.style.display='block';return;}
+  err.style.display='none';
+  document.getElementById('formContainer').style.display='none';
+  document.getElementById('formSuccess').style.display='block';
+}
+
+// SMOOTH SCROLL OFFSET FOR NAV
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const target=document.querySelector(a.getAttribute('href'));
+    if(target){e.preventDefault();const y=target.getBoundingClientRect().top+window.scrollY-70;window.scrollTo({top:y,behavior:'smooth'});}
+  });
+});
+</script>
+</body>
+</html>
